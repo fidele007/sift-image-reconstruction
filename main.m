@@ -1,0 +1,1 @@
+% [sifts, meta] = siftgeo_read('../siftgeo/100000.siftgeo');[sifts, meta] = siftgeo_read('../cat.siftgeo');size(sifts)size(meta)
