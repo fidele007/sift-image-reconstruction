@@ -25,5 +25,4 @@ endfunction
 img=imread('../cat.jpg');
 
 crop = crop(img, 500, 600, 100);
-patch = get_patch(crop);
-figure; imshow(patch);
+figure; imshow(get_patch(crop));
