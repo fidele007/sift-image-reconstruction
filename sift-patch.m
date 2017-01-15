@@ -39,7 +39,7 @@ function X = getImagePatch(n_img, n_sift, r=10, C, ref_img)
       y_s = max([floor(X_s(2) - r / 2), 1]);
       y_e = min([floor(X_s(2) + r / 2 - 1), S(2)]);
       X = f(x_s:x_e, y_s:y_e, :);
-      X = stiching(ref_img, C(1), C(2), X, r);
+      X = stiching(ref_img, C(2), C(1), X, r);
     else
       disp("ici");
       X=ref_img;
@@ -55,11 +55,18 @@ img=imread('building/building.jpg');
 best_sift = load("building/bestSifts_building.mat");
 [nb t] = size(best_sift);
 
+final = zeros(size(img));
 % Find & replace patch image corresponding to sift descriptor
 for i=1:nb
   X = meta(i,1:3);
-  img=getImagePatch(best_sift(i , 1), best_sift(i , 2), sqrt(X(3)), X, img);
+  final=getImagePatch(best_sift(i , 1), best_sift(i , 2), 2 * sqrt(X(3)), X, final);
+  if mod(i, 500)==0
+    figure;
+    imshow(final/255);
+  endif
 endfor
 
 figure;
 imshow(img);
+figure;
+imshow(final/255);
