@@ -2,3 +2,6 @@
 *.jpg
 *.mat
 .DS_Store
+*.jpeg
+*.png
+octave-workspace
