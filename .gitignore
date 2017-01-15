@@ -1,3 +1,6 @@
 *.siftgeo
 *.jpg
 *.mat
+*.ppm
+*.haraff
+*.hesaff
