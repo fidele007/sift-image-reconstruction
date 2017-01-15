@@ -4,3 +4,7 @@
 *.ppm
 *.haraff
 *.hesaff
+.DS_Store
+*.jpeg
+*.png
+octave-workspace

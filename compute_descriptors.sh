@@ -13,5 +13,6 @@ fi
 djpeg $1 | ppmtopgm | pnmnorm -bpercent=0.01 -wpercent=0.01 -maxexpand=400 | pamscale -pixels $[1024*768] > 7mp
 
 ./compute_descriptors_mac -i 7mp -o4 $2 -hesaff -sift
+# ./compute_descriptors_linux64 -i 7mp -o4 $2 -hesaff -sift
 
 rm -r 7mp
