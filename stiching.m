@@ -1,3 +1,6 @@
+% Stiching function
+% Input : initial image, center (x, y), patch image, rayon
+% Output : image stiched
 function img = stiching(I, x, y, im_patch, dr)
   img = I;
   [dx dy r] = size(im_patch);
@@ -15,14 +18,3 @@ function img = stiching(I, x, y, im_patch, dr)
     endfor
   endfor
 endfunction
-
-
-%img = imread("a.jpg");
-%p_1 = imread("patch_1.jpg");
-%imshow(img);
-%title("Original image");
-
-%figure;
-%n_img = stiching(img, 500, 100, 20, p_1);
-%title("Patch image");
-%imshow(n_img);

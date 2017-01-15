@@ -1,5 +1,4 @@
-[sifts, meta] = siftgeo_read('cat.siftgeo');
-
+% Crop image to get patch
 function C = crop(I, x, y, r=1, A)
     [n_row n_col n_cha] = size(I);
 
@@ -15,7 +14,7 @@ function C = crop(I, x, y, r=1, A)
     endfor
 endfunction
 
-
+% Get image from cropped matrix
 function P = get_patch(I)
     n_cha = size(I,3);
     for i=1:n_cha
@@ -35,33 +34,32 @@ function X = getImagePatch(n_img, n_sift, r=10, C, ref_img)
     l = size(meta_p);
     if (n_sift <= l(1))
       X_s = meta_p(n_sift,1:2);
-      X = f(floor(X_s(1) - r / 2):floor(X_s(1) + r / 2 - 1), floor(X_s(2) - r / 2):floor(X_s(2) + r / 2 - 1), :);
+      x_s = max([floor(X_s(1) - r / 2), 1]);
+      x_e = min([floor(X_s(1) + r / 2 - 1), S(1)]);
+      y_s = max([floor(X_s(2) - r / 2), 1]);
+      y_e = min([floor(X_s(2) + r / 2 - 1), S(2)]);
+      X = f(x_s:x_e, y_s:y_e, :);
       X = stiching(ref_img, C(1), C(2), X, r);
-      %figure;
-      %imshow(X);
     else
       disp("ici");
       X=ref_img;
     endif
 endfunction
 
-img=imread('cat.jpg');
-%imshow(img);
-
+% Read reference sift and image
+[sifts, meta] = siftgeo_read('building/building.siftgeo');
+img=imread('building/building.jpg');
 [a, b] = size(meta);
-A = reshape(meta(500,5:8), 2, 2); % affine matrix
 
-best_sift = load("best_sifts.mat");
+% Read best sift matrice
+best_sift = load("building/bestSifts_building.mat");
 [nb t] = size(best_sift);
 
+% Find & replace patch image corresponding to sift descriptor
 for i=1:nb
   X = meta(i,1:3);
-  img=getImagePatch(best_sift(i , 1), best_sift(i , 2), 15, X, img);
+  img=getImagePatch(best_sift(i , 1), best_sift(i , 2), sqrt(X(3)), X, img);
 endfor
 
 figure;
 imshow(img);
-
-% crop = crop(img, X(1), X(2), 100, A);
-% imshow(get_patch(crop));
-% figure; imshow(sifts);
