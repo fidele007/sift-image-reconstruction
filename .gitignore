@@ -1,3 +1,4 @@
 *.siftgeo
 *.jpg
 *.mat
+.DS_Store
