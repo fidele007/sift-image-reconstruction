@@ -1,27 +1,34 @@
-NUM_DESC = 1125;
+function bestSifts = get_best_sifts(imageSift, numFiles)
 
-function bestSifts = get_best_sifts(imageSift)
+  % Get SIFT for the first numFiles in the image database
+  siftFiles = glob('../siftgeo/*.siftgeo');
+  allSifts = cell(numFiles,2);
+  for i=1:numFiles
+    [~, name] = fileparts(siftFiles{i});
+    [exSift ~] = siftgeo_read(['../siftgeo/' name '.siftgeo']);
+    allSifts(i,1) = str2num(name);
+    allSifts(i,2) = exSift;
+  endfor
 
-[sifts, meta] = siftgeo_read(imageSift);
+  [sifts, meta] = siftgeo_read(imageSift);
 
-% for each descriptor, search its nearest neighbor in the external database
-siftFiles = glob('../siftgeo/*.siftgeo');
-bestSifts = []
-allSifts = load('allSifts.mat');
+  bestSifts = [];
+  for i=1:size(sifts,1)
+    best_name = 0;
+    best_region = 0;
+    best_d = 0;
+    for j=1:size(allSifts,1)
+      d = pdist2(allSifts{j,2},sifts(i,:));
+      if (max(d) > best_d)
+        best_d = max(d);
+        best_region = find(d==max(d))(1);
+        best_name = allSifts{j,1};
+      endif
+    endfor
 
-for i=1:size(sifts,1)
-  d = pdist2(allSifts,sifts(i,:));
-  best_ind = find(d==max(d))(1);
-  [~, name] = fileparts(siftFiles{ceil(best_ind/NUM_DESC)});
-  best_name = str2num(name);
-  best_region = mod(best_ind, NUM_DESC);
-  if (best_region == 0)
-    best_region = NUM_DESC
-  endif
-
-  bestSifts = [bestSifts ; best_name best_region];
-endfor
-
-save bestSifts.mat bestSifts
+    bestSifts = [bestSifts ; best_name best_region];
+  endfor
+  % save the bestSifts matrix for possible reuse
+  save bestSifts.mat bestSifts
 
 endfunction

@@ -1,5 +1,7 @@
+NUM_FILES = 100;
+
 % for each descriptor, search its nearest neighbor in the external database
-bestSifts = get_best_sifts('cat.siftgeo');
+bestSifts = get_best_sifts('building.siftgeo', NUM_FILES);
 
 % recover the corresponding elliptic image patch
 
