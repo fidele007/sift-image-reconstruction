@@ -1,7 +1,7 @@
 % Stiching function
 % Input : initial image, center (x, y), patch image, rayon
 % Output : image stiched
-function img = stiching(I, x, y, im_patch, dr)
+function img = stitch(I, x, y, im_patch, dr)
   img = I;
   [dx dy r] = size(im_patch);
   %disp(size(im_patch));

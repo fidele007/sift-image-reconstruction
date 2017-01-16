@@ -1,12 +1,29 @@
 NUM_FILES = 100;
 
 % for each descriptor, search its nearest neighbor in the external database
-bestSifts = get_best_sifts('building.siftgeo', NUM_FILES);
+% bestSifts = get_best_sifts('building.siftgeo', NUM_FILES);
 
-% recover the corresponding elliptic image patch
+% Read reference sift and image
+[sifts, meta] = siftgeo_read('img3.siftgeo');
+img=imread('img3.jpg');
+[a, b] = size(meta);
 
-% warp the patch
+% Read best sift matrice
+best_sift = load('bestSifts_building.mat');
+[nb t] = size(best_sift);
 
-% stich all patches
+final = zeros(size(img));
+% Find & replace patch image corresponding to sift descriptor
+for i=1:nb
+  X = meta(i,1:3);
+  final=get_image_patch(best_sift(i , 1), best_sift(i , 2), 2 * sqrt(X(3)), X, final);
+  if mod(i, 500)==0
+    figure;
+    imshow(final/255);
+  endif
+endfor
 
-% complete remaining empty zones
+figure;
+imshow(img);
+figure;
+imshow(final/255);
