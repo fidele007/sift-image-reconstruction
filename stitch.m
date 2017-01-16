@@ -13,8 +13,14 @@ function img = stitch(I, x, y, im_patch, dr)
       %disp(a);
       %disp(b);
 %      if (((a > floor(dr/2+1)) && (a < floor(dx - dr/2)) && (b > upper(dr/2+1)) && (b < floor(dy - dr/2 - 1))))
-        img(a, b,:) = im_patch(xx, yy, :);
+        img(a, b) = im_patch(xx, yy);
 %      endif
     endfor
   endfor
+  %% Decommenter ici pour activer le poisson edition apres insertion
+%  if size(size(img), 2) > 2
+%    img = poisson_solver(rgb2gray(img));
+%  else
+%    img = poisson_solver(mat2gray(img));
+%  end
 endfunction
