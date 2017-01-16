@@ -1,11 +1,11 @@
 NUM_FILES = 100;
 
 % for each descriptor, search its nearest neighbor in the external database
-% bestSifts = get_best_sifts('building.siftgeo', NUM_FILES);
+bestSifts = get_best_sifts('building.siftgeo', NUM_FILES);
 
 % Read reference sift and image
-[sifts, meta] = siftgeo_read('img3.siftgeo');
-img=imread('img3.jpg');
+[sifts, meta] = siftgeo_read('building.siftgeo');
+img=imread('building.jpg');
 [a, b] = size(meta);
 
 % Read best sift matrice
